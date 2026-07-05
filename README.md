@@ -205,8 +205,8 @@ You can read the spoken presentation script for a 3-4 minute walkthrough in [DEM
 ## Assets
 
 ### Cover Page Banner
-![SwimSafe AI Cover Page Banner](assets/cover_page_banner.png)
+![SwimSafe AI Cover Page Banner](assets/cover_page_banner_v2.png)
 
 ### Architecture Diagram
-![SwimSafe AI Architecture Diagram](assets/architecture_diagram.png)
+![SwimSafe AI Architecture Diagram](assets/architecture_diagram_v2.png)
 
