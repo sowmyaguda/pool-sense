@@ -1,12 +1,12 @@
 [0:00 — HOOK]
-Welcome to the demonstration of PoolSense, a personalized swim/no-swim safety advisor. Every summer, millions of people jump into pools without knowing whether the water chemistry is actually safe for their health. PoolSense bridges this gap by combining raw pool readings with individual health profiles.
+Welcome to the demonstration of SwimSafe AI, a personalized swim/no-swim safety advisor. Every summer, millions of people jump into pools without knowing whether the water chemistry is actually safe for their health. SwimSafe AI bridges this gap by combining raw pool readings with individual health profiles.
 
 [0:20 — WHAT IT IS]
-PoolSense is an ADK 2.0 multi-agent assistant built for the "Agents for Good" track. It provides safety recommendations tailored to kids, seniors, and swimmers with allergies, asthma, or skin sensitivity.
+SwimSafe AI is an ADK 2.0 multi-agent assistant built for the "Agents for Good" track. It provides safety recommendations tailored to kids, seniors, and swimmers with allergies, asthma, or skin sensitivity.
 
 [0:40 — SHOW THE BANNER]
 (show assets/cover_page_banner.png)
-As you can see from our cover banner, PoolSense is automated, secure, and intelligent. It is designed to turn complex water readings into clear, actionable advice.
+As you can see from our cover banner, SwimSafe AI is automated, secure, and intelligent. It is designed to turn complex water readings into clear, actionable advice.
 
 [1:00 — ARCHITECTURE]
 (show assets/architecture_diagram.png)
@@ -32,4 +32,4 @@ You see the server pausing and raising a HITL interrupt, asking if we want to ov
 All of this is supported by a robust local MCP server that calculates the Langelier Saturation Index (LSI) and diagnoses water issues, completely decoupled from the main LLM orchestrator. The security node ensures PII scrubbing and prompt injection guards are active for every turn.
 
 [3:30 — IMPACT / CLOSE]
-PoolSense prevents pool-related rashes, respiratory flares, and waterborne illnesses by translating technical chemical parameters into human safety guidance. Thank you for watching!
+SwimSafe AI prevents pool-related rashes, respiratory flares, and waterborne illnesses by translating technical chemical parameters into human safety guidance. Thank you for watching!

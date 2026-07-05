@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoolSense — Personalized Swim Safety Advisor</title>
+    <title>SwimSafe AI — Personalized Swim Safety Advisor</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
         <!-- Navbar -->
         <nav class="navbar glass">
             <div class="brand">
-                <span>🏊</span> PoolSense
+                <span>🏊</span> SwimSafe AI
             </div>
             <div class="nav-links" id="nav-links">
                 <!-- Auth status dependent buttons -->
@@ -27,7 +27,7 @@
             <div class="hero-tagline">Personalized Smart Safety</div>
             <h1 class="hero-title">Is the water safe for <span style="color: var(--accent-cyan);">you</span> to swim?</h1>
             <p class="hero-desc">
-                PoolSense goes beyond simple chemical tests. It compares pool metrics directly with personal health profiles to give smart, tailored swimming recommendations for adults, toddlers, asthmatics, and swimmers with sensitive skin.
+                SwimSafe AI goes beyond simple chemical tests. It compares pool metrics directly with personal health profiles to give smart, tailored swimming recommendations for adults, toddlers, asthmatics, and swimmers with sensitive skin.
             </p>
             <button class="btn-primary" onclick="getStarted()">Start Assessment</button>
 
@@ -221,7 +221,7 @@
                         <button class="btn-add-swimmer" style="margin-top:0.75rem;" onclick="openSwimmerModal()">+ Add Swimmer Profile</button>
                     </div>
 
-                    <button class="btn-primary" style="width:100%; margin-top:1.5rem; padding: 1rem;" onclick="submitPoolSenseRequest()">🔍 Check Swimming Safety</button>
+                    <button class="btn-primary" style="width:100%; margin-top:1.5rem; padding: 1rem;" onclick="submitSwimSafeRequest()">🔍 Check Swimming Safety</button>
                 </div>
 
                 <!-- Right Output Panel -->
@@ -242,7 +242,7 @@
                     <!-- Loader -->
                     <div id="results-loader" class="loader-wrapper hidden">
                         <span class="loader"></span>
-                        <h3>Running PoolSense AI Assessment...</h3>
+                        <h3>Running SwimSafe AI Assessment...</h3>
                         <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:0.5rem;">Connecting to agent graph and verifying safety metrics</p>
                     </div>
 

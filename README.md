@@ -1,4 +1,4 @@
-# PoolSense Agent 🏊
+# SwimSafe AI Agent 🏊
 
 A personalized swim/no-swim safety advisor that analyzes pool chemical metrics against swimmer health profiles to make smart, personalized safety verdicts.
 
@@ -205,8 +205,8 @@ You can read the spoken presentation script for a 3-4 minute walkthrough in [DEM
 ## Assets
 
 ### Cover Page Banner
-![PoolSense Cover Page Banner](assets/cover_page_banner.png)
+![SwimSafe AI Cover Page Banner](assets/cover_page_banner.png)
 
 ### Architecture Diagram
-![PoolSense Architecture Diagram](assets/architecture_diagram.png)
+![SwimSafe AI Architecture Diagram](assets/architecture_diagram.png)
 

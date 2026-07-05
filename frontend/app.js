@@ -6,7 +6,7 @@ let activeSessionId = null;
 // Initial Setup
 document.addEventListener('DOMContentLoaded', () => {
     // Check if user is logged in
-    const savedUser = localStorage.getItem('poolsense_user');
+    const savedUser = localStorage.getItem('swimsafe_user');
     if (savedUser) {
         currentUser = JSON.parse(savedUser);
         updateNavbar();
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRangeVal('cyanuric-acid');
     
     // Render default swimmers if list is empty
-    const savedSwimmers = localStorage.getItem('poolsense_swimmers');
+    const savedSwimmers = localStorage.getItem('swimsafe_swimmers');
     if (savedSwimmers) {
         swimmersList = JSON.parse(savedSwimmers);
     } else {
@@ -108,14 +108,14 @@ function handleAuthSubmit(event, type) {
         currentUser = { email, name };
     }
     
-    localStorage.setItem('poolsense_user', JSON.stringify(currentUser));
+    localStorage.setItem('swimsafe_user', JSON.stringify(currentUser));
     updateNavbar();
     showDashboard();
 }
 
 function handleLogout() {
     currentUser = null;
-    localStorage.removeItem('poolsense_user');
+    localStorage.removeItem('swimsafe_user');
     updateNavbar();
     document.getElementById('dashboard-screen').classList.add('hidden');
     document.getElementById('landing-screen').classList.remove('hidden');
@@ -178,14 +178,14 @@ function saveSwimmerProfile(event) {
         swimmersList.push(swimmer);
     }
     
-    localStorage.setItem('poolsense_swimmers', JSON.stringify(swimmersList));
+    localStorage.setItem('swimsafe_swimmers', JSON.stringify(swimmersList));
     renderSwimmers();
     closeSwimmerModal();
 }
 
 function deleteSwimmer(index) {
     swimmersList.splice(index, 1);
-    localStorage.setItem('poolsense_swimmers', JSON.stringify(swimmersList));
+    localStorage.setItem('swimsafe_swimmers', JSON.stringify(swimmersList));
     renderSwimmers();
 }
 
@@ -221,7 +221,7 @@ function renderSwimmers() {
 }
 
 // Request & API connection
-async function submitPoolSenseRequest(confirmAnswer = null) {
+async function submitSwimSafeRequest(confirmAnswer = null) {
     if (swimmersList.length === 0) {
         alert("Please add at least one swimmer profile before running the check.");
         return;
@@ -316,9 +316,9 @@ async function submitPoolSenseRequest(confirmAnswer = null) {
             // Handle HITL warning and request confirmation
             const confirmMsg = prompt(interruptEvent.content?.parts?.[0]?.text || "The pool chemistry is flagged as dangerously unbalanced! Do you wish to override this warning and show personal swimmer advice anyway? (Enter 'yes' to proceed, or 'no' to abort):");
             if (confirmMsg) {
-                submitPoolSenseRequest(confirmMsg);
+                submitSwimSafeRequest(confirmMsg);
             } else {
-                submitPoolSenseRequest("no");
+                submitSwimSafeRequest("no");
             }
             return;
         }
@@ -330,7 +330,7 @@ async function submitPoolSenseRequest(confirmAnswer = null) {
         }
         
     } catch (err) {
-        console.error("PoolSense Assessment Error:", err);
+        console.error("SwimSafe AI Assessment Error:", err);
         loader.classList.add('hidden');
         placeholder.classList.remove('hidden');
         alert("Failed to connect to pool-sense backend: " + err.message);

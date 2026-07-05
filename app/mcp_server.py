@@ -3,9 +3,9 @@ from mcp.server.fastmcp import FastMCP
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("pool-sense-mcp")
+logger = logging.getLogger("swimsafe-mcp")
 
-mcp = FastMCP("PoolSense MCP Server")
+mcp = FastMCP("SwimSafe AI MCP Server")
 
 @mcp.tool()
 def get_chemical_guidelines() -> str:

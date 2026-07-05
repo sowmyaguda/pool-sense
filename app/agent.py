@@ -129,7 +129,7 @@ orchestrator = LlmAgent(
     name="orchestrator",
     model=config.model,
     instruction="""
-    You are the PoolSense Orchestrator. You help users determine if a pool is safe for them or their group.
+    You are the SwimSafe AI Orchestrator. You help users determine if a pool is safe for them or their group.
     
     1. Delegate pool chemistry analysis to the pool_analyzer tool using the pool readings provided in the input.
     2. Delegate swimmer risk assessment to the swimmer_safety_analyst tool using the pool assessment results and swimmer profiles.
@@ -259,7 +259,7 @@ def final_response(node_input: dict):
         yield Event(output=node_input)
         return
 
-    output_text = "## 🏊 PoolSense Safety Report\n\n"
+    output_text = "## 🏊 SwimSafe AI Safety Report\n\n"
     
     if "overall_verdict" in node_input:
         verdict = node_input["overall_verdict"].upper()
