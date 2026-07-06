@@ -226,6 +226,7 @@ def security_incident_handler(node_input: str) -> str:
     audit_log("WARNING", "INCIDENT_HANDLED", {"message": node_input})
     return f"🚫 Request Blocked: {node_input}"
 
+@node(rerun_on_resume=True)
 async def hitl_checkpoint(ctx: Context, node_input: Any):
     """
     Human-in-the-Loop node. Pauses if pool chemistry is critically dangerous to ask for confirmation.
