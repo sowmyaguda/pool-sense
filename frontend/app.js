@@ -297,7 +297,7 @@ async function submitSwimSafeRequest(confirmAnswer = null) {
         
         for (let i = events.length - 1; i >= 0; i--) {
             const ev = events[i];
-            if (ev.interrupt_ids && ev.interrupt_ids.length > 0) {
+            if ((ev.interrupt_ids && ev.interrupt_ids.length > 0) || (ev.longRunningToolIds && ev.longRunningToolIds.length > 0)) {
                 interruptEvent = ev;
                 break;
             }
