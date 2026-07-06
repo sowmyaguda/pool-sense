@@ -145,6 +145,7 @@ orchestrator = LlmAgent(
     description="Coordinates pool water and swimmer safety evaluations.",
     tools=[AgentTool(pool_analyzer), AgentTool(swimmer_safety_analyst)],
     output_schema=PoolSenseOutput,
+    output_key="orchestrator_output",
 )
 
 # ---------------------------------------------------------
@@ -160,10 +161,15 @@ def audit_log(severity: str, action: str, details: dict):
     }
     logger.info(f"AUDIT_LOG: {json.dumps(log_entry)}")
 
-def security_checkpoint(node_input: types.Content):
+def security_checkpoint(ctx: Context, node_input: types.Content):
     """
     Security check for PII scrubbing, injection detection, and input constraints.
     """
+    # Check if we are resuming from a HITL pause. If so, bypass orchestrator and route directly to hitl_checkpoint
+    if ctx.resume_inputs and "confirm_override" in ctx.resume_inputs:
+        user_response = ctx.resume_inputs["confirm_override"]
+        return Event(output=user_response, route="resume_route")
+
     # 1. Extract text from the content
     text = ""
     if node_input and node_input.parts:
@@ -203,11 +209,21 @@ def security_incident_handler(node_input: str) -> str:
     audit_log("WARNING", "INCIDENT_HANDLED", {"message": node_input})
     return f"🚫 Request Blocked: {node_input}"
 
-async def hitl_checkpoint(ctx: Context, node_input: dict):
+async def hitl_checkpoint(ctx: Context, node_input: Any):
     """
     Human-in-the-Loop node. Pauses if pool chemistry is critically dangerous to ask for confirmation.
     """
-    pool_analysis = node_input.get("pool_analysis", {})
+    # If resuming, node_input might be the string user_response, retrieve the actual analysis from state
+    orchestrator_output = ctx.state.get("orchestrator_output")
+    if not orchestrator_output and isinstance(node_input, dict):
+        orchestrator_output = node_input
+
+    if not orchestrator_output:
+        # Fallback if no analysis exists
+        yield Event(output="Error: No prior safety analysis found on resume.")
+        return
+
+    pool_analysis = orchestrator_output.get("pool_analysis", {})
     chemical_safety = pool_analysis.get("chemical_safety", "safe")
     warnings = pool_analysis.get("key_warnings", [])
     
@@ -236,7 +252,7 @@ async def hitl_checkpoint(ctx: Context, node_input: dict):
                         "verdict": "not recommended",
                         "risks": ["Pool safety check aborted by user due to extreme hazard."],
                         "guidance": ["Do not enter the pool. Extremely hazardous conditions."]
-                    } for sv in node_input.get("swimmer_verdicts", [])
+                    } for sv in orchestrator_output.get("swimmer_verdicts", [])
                 ],
                 "manager_alert_required": True,
                 "manager_alert_message": "Swimming aborted. Extremely hazardous pool chemistry detected."
@@ -247,7 +263,7 @@ async def hitl_checkpoint(ctx: Context, node_input: dict):
             
         audit_log("WARNING", "HITL_OVERRIDE_APPROVED", {"warnings": warnings})
 
-    yield Event(output=node_input)
+    yield Event(output=orchestrator_output)
 
 def final_response(node_input: dict):
     """
@@ -273,8 +289,14 @@ def final_response(node_input: dict):
         output_text += f"- **Chlorine Level**: {pool_analysis.get('chlorine_status', 'N/A')}\n"
         output_text += f"- **pH Level**: {pool_analysis.get('ph_status', 'N/A')}\n"
         output_text += f"- **Stabilizer (CYA)**: {pool_analysis.get('stabilizer_status', 'N/A')}\n"
-        output_text += f"- **Water Clarity & Sanitation**: {pool_analysis.get('clarity_sanitation_status', 'N/A')}\n"
+        output_text += f"- **Water Clarity**: {pool_analysis.get('clarity_status', 'N/A')}\n"
         
+        # LSI
+        lsi_info = pool_analysis.get("lsi_index_info", {})
+        lsi_val = lsi_info.get("lsi_value")
+        if lsi_val is not None:
+            output_text += f"- **Langelier Saturation Index (LSI)**: `{lsi_val}` ({lsi_info.get('water_status', 'balanced')})\n"
+            
         warnings = pool_analysis.get("key_warnings", [])
         if warnings:
             output_text += "\n⚠️ **Warnings:**\n"
@@ -327,7 +349,7 @@ root_agent = Workflow(
     name="pool_sense",
     edges=[
         ('START', security_checkpoint),
-        (security_checkpoint, {"clean": orchestrator, "SECURITY_EVENT": security_incident_handler}),
+        (security_checkpoint, {"clean": orchestrator, "SECURITY_EVENT": security_incident_handler, "resume_route": hitl_checkpoint}),
         (orchestrator, hitl_checkpoint),
         (hitl_checkpoint, final_response),
         (security_incident_handler, final_response),
