@@ -1,4 +1,4 @@
-# Submission Write-Up: SwimSafe AI Agent 🏊
+ # Submission Write-Up: SwimSafe AI Agent 🏊
 
 ## Problem Statement
 Swimming is a fun and healthy activity, but chemical imbalances and sanitation issues in pool water can lead to serious health concerns. While general guidelines exist, average swimmers do not know how to interpret readings (chlorine, pH, CYA) or understand how those readings impact them personally. A pool safe for a healthy adult could cause respiratory flares in asthmatics, severe eczema breakouts, or eye irritation in sensitive individuals. SwimSafe AI solves this by bridging the gap between raw chemical metrics and individual health/profile considerations to provide smart, personalized safety verdicts.

@@ -1,35 +1,36 @@
-[0:00 — HOOK]
-Welcome to the demonstration of SwimSafe AI, a personalized swim/no-swim safety advisor. Every summer, millions of people jump into pools without knowing whether the water chemistry is actually safe for their health. SwimSafe AI bridges this gap by combining raw pool readings with individual health profiles.
+[0:00 — HOOK & ANTIGRAVITY CO-DEVELOPMENT]
+Welcome to SwimSafe AI, a personalized swim/no-swim safety advisor. Every summer, millions of people swim without knowing if the water chemistry is safe for their health. SwimSafe AI bridges this gap by combining raw pool readings with individual health profiles. 
 
-[0:20 — WHAT IT IS]
-SwimSafe AI is an ADK 2.0 multi-agent assistant built for the "Agents for Good" track. It provides safety recommendations tailored to kids, seniors, and swimmers with allergies, asthma, or skin sensitivity.
+This project was built from scratch using the Google Antigravity AI Coding Assistant. Antigravity helped me scaffold the project via the Agents CLI, write the ADK 2.0 graph logic, build a custom FastAPI backend, and develop the clean HTML5 dashboard you see today, complete with swimmer profile management and help tooltips.
 
-[0:40 — SHOW THE BANNER]
-(show assets/cover_page_banner.png)
-As you can see from our cover banner, SwimSafe AI is automated, secure, and intelligent. It is designed to turn complex water readings into clear, actionable advice.
+[0:40 — WHAT IT IS & VALUES]
+SwimSafe AI is an ADK 2.0 multi-agent assistant built for the "Agents for Good" track. It turns complex chemical readings into clear, actionable advice, preventing rashes, respiratory flares, and waterborne illnesses by tailoring recommendations to children, seniors, and sensitive groups.
 
-[1:00 — ARCHITECTURE]
-(show assets/architecture_diagram.png)
-Let's look at the underlying architecture. The flow starts with user input going into the Security Checkpoint node, which scrubs PII and checks for prompt injection. Once cleared, it moves to the Orchestrator. The Orchestrator delegates tasks to two sub-agents: the Pool Analyzer Agent, which uses our custom MCP server to check chemical guidelines and calculate the Langelier Saturation Index, and the Swimmer Safety Analyst Agent, which checks swimmer profile risks. 
+[1:10 — ARCHITECTURE & SECURITY]
+(show assets/architecture_diagram_v2.png)
+Our architecture diagram shows the end-to-end flow. The input first passes through a Security Checkpoint node. This is a critical security feature: it scrub PII (like emails and phone numbers), stops prompt injection, and restricts negative values before hitting the LLM. 
 
-If conditions are extremely dangerous, the HITL Checkpoint node pauses execution to ask the user to confirm they want to override the warning. Finally, the response is rendered in a clean Markdown report.
+Once cleared, the Orchestrator delegates tasks to two sub-agents via AgentTool: the Pool Analyzer Agent, which uses a decoupled Model Context Protocol (MCP) server to check guidelines and calculate the Langelier Saturation Index, and the Swimmer Safety Analyst Agent, which handles individual swimmer risks. If conditions are dangerous, a Human-in-the-Loop (HITL) Checkpoint interrupts the graph to ask for confirmation.
 
-[2:00 — LIVE DEMO]
-(switch to playground at localhost:18081)
-Let's see this in action. I'll paste our first test case: a healthy adult named Alice swimming in a pool with perfect parameters. 
-(pause)
-As we submit, you can see the orchestrator delegates the pool analysis and swimmer checks, returning a clean "SAFE" overall verdict, along with pool chemistry reports.
+[2:00 — LIVE DEMO & DEPLOYABILITY]
+(show dashboard at http://localhost:8080/dashboard/ or hosted GitHub Pages URL)
+Let's look at the live custom dashboard. This frontend is deployable directly on GitHub Pages, connecting to the backend via CORS-enabled API routes. 
 
-Next, let's look at what happens when a swimmer has health risks. We'll input Bobby, a child who has sensitive skin, eczema, and asthma. 
-(pause)
-The agent automatically updates the verdict to "CAUTION", highlighting that the chlorine levels could irritate Bobby's skin and breathing, and advises using goggles and taking a shower immediately after swimming.
+First, we see our pool conditions on the left. Normal users might not know what these readings mean, so Antigravity and I implemented an inline help system: a "Need Help?" card explaining where to find values, and hoverable "?" tooltips next to Chlorine, pH, and Cyanuric Acid.
 
-Finally, let's test a dangerous condition. We'll set the chlorine level to a high 12 ppm and PH to a low 6.8. 
-(pause)
-You see the server pausing and raising a HITL interrupt, asking if we want to override the danger warning. If we type 'no', it aborts the check and drafts a manager alert message.
+Let's add some swimmer profiles. Under the Swimmer Group section, we can easily add, edit (using the pencil icon), or delete (using the trash can) swimmer profiles. 
 
-[3:00 — SECURITY & MCP]
-All of this is supported by a robust local MCP server that calculates the Langelier Saturation Index (LSI) and diagnoses water issues, completely decoupled from the main LLM orchestrator. The security node ensures PII scrubbing and prompt injection guards are active for every turn.
+Let's test Case 1: a healthy adult named Alice in a perfectly balanced pool (Chlorine 2.0, pH 7.4). 
+(submit, show results)
+The system executes the check, returning a "SAFE" verdict and displaying our structured safety cards: Verdict, Personal Recommendations, Precautions, and Maintenance Alerts.
 
-[3:30 — IMPACT / CLOSE]
-SwimSafe AI prevents pool-related rashes, respiratory flares, and waterborne illnesses by translating technical chemical parameters into human safety guidance. Thank you for watching!
+Now, let's see how SwimSafe AI protects sensitive swimmers. Let's add Bobby, a child with skin and breathing sensitivity (asthma and eczema).
+(submit, show results)
+The system flags a "CAUTION" verdict, warning that chlorine levels might trigger Bobby's eczema, advising him to wear goggles and rinse off immediately.
+
+Finally, let's test a danger condition by setting the chlorine to an unsafe 12 ppm.
+(submit, show prompt)
+You see the server pausing and raising a HITL interrupt, prompting us to override the warning. If we type 'no', the safety checks abort and a Maintenance Alert is drafted.
+
+[4:15 — IMPACT & CONCLUSION]
+SwimSafe AI makes pool safety accessible, automated, and personalized. By combining ADK 2.0, an MCP server, robust input security, and a beautiful custom dashboard built alongside the Antigravity AI IDE, we've created a complete, demo-ready application. Thank you for watching!
