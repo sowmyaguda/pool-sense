@@ -167,10 +167,11 @@ def security_checkpoint(ctx: Context, node_input: types.Content):
     """
     Security check for PII scrubbing, injection detection, and input constraints.
     """
-    # Check if we are resuming from a HITL pause. If so, bypass orchestrator and route directly to hitl_checkpoint
+    # Check if we are resuming from a HITL pause. If so, return the cached original_input
     if ctx.resume_inputs and "confirm_override" in ctx.resume_inputs:
-        user_response = ctx.resume_inputs["confirm_override"]
-        return Event(output=user_response, route="resume_route")
+        original = ctx.state.get("original_input")
+        if original:
+            return Event(output=original, route="clean")
 
     # 1. Extract text from the content
     text = ""
@@ -203,6 +204,7 @@ def security_checkpoint(ctx: Context, node_input: types.Content):
         audit_log("WARNING", "INVALID_INPUT_METRICS", {"input_preview": text[:100]})
         return Event(output="Validation Check: Invalid negative values provided for pool readings.", route="SECURITY_EVENT")
 
+    ctx.state["original_input"] = scrubbed_text
     audit_log("INFO", "INPUT_CLEARED", {"pii_scrubbed": scrubbed_text != text})
     return Event(output=scrubbed_text, route="clean")
 
@@ -351,7 +353,7 @@ root_agent = Workflow(
     name="pool_sense",
     edges=[
         ('START', security_checkpoint),
-        (security_checkpoint, {"clean": orchestrator, "SECURITY_EVENT": security_incident_handler, "resume_route": hitl_checkpoint}),
+        (security_checkpoint, {"clean": orchestrator, "SECURITY_EVENT": security_incident_handler}),
         (orchestrator, hitl_checkpoint),
         (hitl_checkpoint, final_response),
         (security_incident_handler, final_response),
