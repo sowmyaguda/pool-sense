@@ -339,6 +339,18 @@ def final_response(node_input: dict):
     )
     yield Event(output=node_input)
 
+@node(rerun_on_resume=False)
+async def orchestrator_node(ctx: Context, node_input: str):
+    """Wrap orchestrator agent to disable rerun_on_resume."""
+    from google.genai import types
+    content = types.Content(role="user", parts=[types.Part.from_text(text=node_input)])
+    
+    # Run the orchestrator agent and save output to ctx.state
+    async for event in orchestrator.run_async(new_message=content, session=ctx.session):
+        if event.output:
+            ctx.state["orchestrator_output"] = event.output
+        yield event
+
 # ---------------------------------------------------------
 # Workflow Definitions
 # ---------------------------------------------------------
@@ -349,8 +361,8 @@ root_agent = Workflow(
     name="pool_sense",
     edges=[
         ('START', security_checkpoint),
-        (security_checkpoint, {"clean": orchestrator, "SECURITY_EVENT": security_incident_handler, "resume_route": hitl_checkpoint}),
-        (orchestrator, hitl_checkpoint),
+        (security_checkpoint, {"clean": orchestrator_node, "SECURITY_EVENT": security_incident_handler, "resume_route": hitl_checkpoint}),
+        (orchestrator_node, hitl_checkpoint),
         (hitl_checkpoint, final_response),
         (security_incident_handler, final_response),
     ],
