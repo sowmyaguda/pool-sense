@@ -268,8 +268,6 @@ Open **[http://localhost:18081](http://localhost:18081)** in your browser.
 
 ⚠ NEVER push .env to GitHub. Your API key will be exposed publicly.
 
-## Demo Script
-You can read the spoken presentation script for a 3-4 minute walkthrough in [DEMO_SCRIPT.txt](DEMO_SCRIPT.txt).
 
 ## Assets
 
