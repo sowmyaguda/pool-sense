@@ -74,13 +74,14 @@ graph TD
     end
     
     PoolAna -->|More than ideal values? / Yes| HITL[HITL Checkpoint Node]
-    PoolAna -->|No| FinalNode[Final Response Node]
+    PoolAna -->|No| Join(( ))
+    SwimAna --> Join
     
     HITL --> UserConfirm{User Response}
     UserConfirm -->|Override Approve| FinalNode
     UserConfirm -->|Abort| Cancelled[Assessment cancelled by user]
     
-    SwimAna --> FinalNode
+    Join --> FinalNode
     
     FinalNode --> Output[Formatted Markdown Safety Report]
 ```
