@@ -12,6 +12,17 @@ Traditional swimming pool safety relies on a single set of standardized ranges (
 *   **Allergies & Pathogens**: Swimmers with severe chlorine allergies require strict precautions. Conversely, critically low chlorine levels fail to kill bacteria, which poses an immediate hazard to individuals with recent illnesses or open cuts.
 *   **Facility Safety**: Apartment complexes, hotels, and gyms need immediate, automated alerts sent to facility managers when water chemistry drifts into toxic or corrosive ranges.
 
+### The Documented Knowledge Gap
+This gap in pool chemistry awareness is backed by real-world surveys:
+*   **The Leslie's Harris Poll Survey**: Found that **61% of Americans are unfamiliar with proper pool care**, and **71% mistakenly believe that clear water automatically means clean water**. This creates a dangerous, false sense of security, as water can look perfectly clear while hosting dangerous chemical imbalances or active pathogens.
+*   **Testing and Contamination Habits**: Another survey revealed that **23% of pool owners test their water less often than once every two weeks** (far below the CDC's recommended frequency), and over half did not realize everyday cosmetics like sunscreen, deodorant, or makeup directly degrade pool chemistry.
+
+### Real-World Public Health Impact
+This knowledge gap results in severe, documented health hazards:
+*   **Parasitic Outbreaks (Cryptosporidium)**: The CDC has officially recorded dozens of real outbreaks where the chlorine-resistant parasite *Cryptosporidium* spread through pools and splash pads, making thousands of people sick and leading to hundreds of hospitalizations. It is the leading cause of pool-related illness outbreaks tracked by the CDC.
+*   **Pool Chemical Injuries**: On the chemical side, approximately **4,500 people go to the emergency room every single year** in the United States alone due to pool chemical injuries (such as chemical burns or inhaling toxic gases from mixing chemicals improperly), and more than a third of these emergency cases are children or teenagers.
+*   **Asthma Risk and Scientific Uncertainty**: Scientific research indicates a potential link between young children swimming frequently in indoor chlorinated pools and an increased risk of developing asthma. However, this is an area of active study and is not yet fully settled—a recent study found no link at all. SwimSafe AI acknowledges this scientific uncertainty by warning sensitive users without treating the connection as a proven fact, offering honest and transparent guidance.
+
 SwimSafe AI solves this by coordinating specialized AI agents to analyze water metrics, evaluate health histories, and output tailored safety guidelines.
 
 ---
