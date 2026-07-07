@@ -64,10 +64,14 @@ graph TD
     SecHandler -->|Block / No| Blocked[Request Blocked]
     SecHandler -->|Clean / Yes| Orch[Orchestrator Agent]
     
-    Orch -->|agent tools| PoolAna[Pool Analyzer Agent]
+    Orch -->|agent tools| PoolAna
     Orch -->|agent tools| SwimAna[Swimmer Safety Analyst Agent]
     
-    PoolAna -->|MCP protocol| MCPServer[MCP Server Tools: 3 Tools]
+    subgraph Pool Chemistry Analysis
+        PoolAna[Pool Analyzer Agent]
+        MCPServer[MCP Server Tools: 3 Tools]
+        PoolAna <-->|MCP protocol| MCPServer
+    end
     
     PoolAna -->|More than ideal values? / Yes| HITL[HITL Checkpoint Node]
     PoolAna -->|No| FinalNode[Final Response Node]
@@ -75,7 +79,6 @@ graph TD
     HITL --> UserConfirm{User Response}
     UserConfirm -->|Override Approve| FinalNode
     UserConfirm -->|Abort| Cancelled[Assessment cancelled by user]
-    Cancelled --> FinalNode
     
     SwimAna --> FinalNode
     
