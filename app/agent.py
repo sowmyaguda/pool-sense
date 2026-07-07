@@ -231,10 +231,16 @@ async def hitl_checkpoint(ctx: Context, node_input: Any):
     """
     Human-in-the-Loop node. Pauses if pool chemistry is critically dangerous to ask for confirmation.
     """
-    # If resuming, node_input might be the string user_response, retrieve the actual analysis from state
+    # If the orchestrator output is passed in node_input, save it to state
+    if node_input and not isinstance(node_input, str):
+        if hasattr(node_input, "pool_analysis") or (isinstance(node_input, dict) and "pool_analysis" in node_input):
+            if hasattr(node_input, "model_dump"):
+                ctx.state["orchestrator_output"] = node_input.model_dump()
+            elif isinstance(node_input, dict):
+                ctx.state["orchestrator_output"] = node_input
+
+    # Retrieve from state on initial run or on resume
     orchestrator_output = ctx.state.get("orchestrator_output")
-    if not orchestrator_output and isinstance(node_input, dict):
-        orchestrator_output = node_input
 
     if not orchestrator_output:
         # Fallback if no analysis exists
